@@ -1,0 +1,261 @@
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sana Küçük Bir Sürpriz ❤️</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #ffd6e7, #ffeff5, #ffc1d6);
+}
+
+.container {
+    width: 90%;
+    max-width: 500px;
+    min-height: 370px;
+    padding: 40px 25px;
+    background: rgba(255,255,255,0.75);
+    border: 2px solid white;
+    border-radius: 30px;
+    box-shadow: 0 15px 45px rgba(255, 80, 140, 0.2);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    z-index: 5;
+    animation: appear 0.8s ease;
+}
+
+h1 {
+    color: #e84379;
+    font-size: 27px;
+    margin-bottom: 30px;
+    line-height: 1.5;
+}
+
+p {
+    color: #b83264;
+    font-size: 21px;
+    line-height: 1.7;
+    margin-bottom: 30px;
+}
+
+button {
+    border: none;
+    padding: 15px 35px;
+    border-radius: 50px;
+    background: linear-gradient(135deg, #ff5792, #e72e70);
+    color: white;
+    font-size: 19px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(232, 67, 121, 0.3);
+    transition: 0.3s;
+}
+
+button:hover {
+    transform: scale(1.08);
+    box-shadow: 0 8px 25px rgba(232, 67, 121, 0.5);
+}
+
+.emoji {
+    font-size: 45px;
+    margin-bottom: 20px;
+}
+
+.final h1 {
+    font-size: 38px;
+    color: #e52d72;
+    letter-spacing: 2px;
+}
+
+.final p {
+    margin-bottom: 15px;
+}
+
+.falling {
+    position: fixed;
+    top: -60px;
+    z-index: 10;
+    pointer-events: none;
+    animation: fall linear forwards;
+}
+
+@keyframes fall {
+    0% {
+        transform: translateY(-10vh) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(115vh) rotate(720deg);
+        opacity: 0;
+    }
+}
+
+@keyframes appear {
+    from {
+        opacity: 0;
+        transform: scale(0.8) translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+@media(max-width: 480px) {
+    h1 { font-size: 24px; }
+    p { font-size: 19px; }
+    .final h1 { font-size: 32px; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container" id="screen">
+    <div class="emoji">💗</div>
+    <h1>Öncelikle çok kıymetlisin benim için, bunu bilmeni istiyorum...</h1>
+    <button onclick="nextScreen()">Devam ❤️</button>
+</div>
+
+<script>
+
+let page = 0;
+
+const screens = [
+    `
+    <div class="emoji">💗</div>
+    <h1>Öncelikle çok kıymetlisin benim için, bunu bilmeni istiyorum...</h1>
+    <button onclick="nextScreen()">Devam ❤️</button>
+    `,
+
+    `
+    <div class="emoji">🐸💕</div>
+    <p>Her zaman yanında olmaya çalışacağım. Kendini hiç yalnız hissetme. ❤️</p>
+    <button onclick="nextScreen()">Devam ❤️</button>
+    `,
+
+    `
+    <div class="emoji">🥹💞</div>
+    <p>Seni sevdiğimi unutma, bunu her fırsatta söyleyeceğim :)</p>
+    <button onclick="nextScreen()">Devam ❤️</button>
+    `,
+
+    `
+    <div class="emoji">🧸💗</div>
+    <div class="final">
+        <h1>İYİ YOLCULUKLAR</h1>
+        <p>Kendine dikkat et.</p>
+        <p>Seni seviyorum.</p>
+        <p>Sabah aramayı unutma. ❤️</p>
+    </div>
+    <div class="emoji">💖</div>
+    `
+];
+
+function frogSound() {
+    try {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        const ctx = new AudioContext();
+
+        function croak(start, duration, frequency) {
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+
+            osc.type = "sawtooth";
+            osc.frequency.setValueAtTime(frequency, ctx.currentTime + start);
+            osc.frequency.exponentialRampToValueAtTime(
+                frequency * 0.55,
+                ctx.currentTime + start + duration
+            );
+
+            gain.gain.setValueAtTime(0.001, ctx.currentTime + start);
+            gain.gain.linearRampToValueAtTime(
+                0.16,
+                ctx.currentTime + start + 0.025
+            );
+            gain.gain.exponentialRampToValueAtTime(
+                0.001,
+                ctx.currentTime + start + duration
+            );
+
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+
+            osc.start(ctx.currentTime + start);
+            osc.stop(ctx.currentTime + start + duration);
+        }
+
+        croak(0, 0.18, 180);
+        croak(0.22, 0.25, 150);
+        croak(0.52, 0.18, 190);
+
+        setTimeout(() => ctx.close(), 1200);
+    } catch (e) {
+        console.log("Ses oynatılamadı:", e);
+    }
+}
+
+function rain() {
+    const emojis = ["❤️", "💕", "💗", "🐸", "🐸", "🧸", "🧸", "💖"];
+
+    for (let i = 0; i < 55; i++) {
+        setTimeout(() => {
+            const item = document.createElement("div");
+            item.className = "falling";
+            item.innerHTML = emojis[
+                Math.floor(Math.random() * emojis.length)
+            ];
+
+            item.style.left = Math.random() * 100 + "vw";
+            item.style.fontSize = (20 + Math.random() * 25) + "px";
+            item.style.animationDuration = (3 + Math.random() * 3) + "s";
+
+            document.body.appendChild(item);
+
+            setTimeout(() => item.remove(), 6500);
+        }, i * 55);
+    }
+}
+
+function nextScreen() {
+    frogSound();
+    rain();
+
+    page++;
+
+    const screen = document.getElementById("screen");
+
+    screen.style.animation = "none";
+    screen.offsetHeight;
+
+    screen.innerHTML = screens[page];
+
+    screen.style.animation = "appear 0.8s ease";
+
+    if (page === 3) {
+        setTimeout(rain, 700);
+    }
+}
+
+</script>
+
+</body>
+</html>
